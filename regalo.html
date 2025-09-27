@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi alma gemela 💖</title>
+    <style>
+        /* --- ESTILOS BASE Y FONDO ROMÁNTICO --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #4a148c; 
+            background-color: #fce4ec; 
+            overflow-x: hidden; 
+            position: relative; 
+            /* Importante: el scroll vertical debe estar activo para los enlaces de anclaje */
+            overflow-y: scroll; 
+        }
+        
+        /* Efecto de Estrellitas/Puntos Flotantes */
+        .star-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; 
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+            background-size: 10px 10px;
+            z-index: -1;
+            animation: pulse 10s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.8; }
+            to { opacity: 1; }
+        }
+
+        /* --- EFECTO DE CORAZONES FLOTANTES (TODAS LAS PÁGINAS) --- */
+        .heart-effect-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 9999; 
+        }
+
+        .heart {
+            position: absolute;
+            background-color: rgba(255, 105, 180, 0.7); 
+            transform: rotate(-45deg);
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+            animation: floatHeart 8s infinite ease-out;
+        }
+
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 105, 180, 0.7);
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 10px;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(100vh) rotate(-45deg) scale(0); opacity: 0; }
+            20% { opacity: 1; transform: translateY(80vh) rotate(-45deg) scale(1); }
+            100% { transform: translateY(-50px) rotate(-45deg) scale(1.2); opacity: 0; }
+        }
+
+        /* --- EFECTO DE LLUVIA DE TEXTO (SOLO PÁGINA FINAL) --- */
+        .rain-effect-container {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1; 
+        }
+
+        .rain-text {
+            position: absolute;
+            font-size: 1.8rem; 
+            color: rgba(255, 255, 255, 0.9); 
+            font-weight: bold;
+            text-shadow: 1px 1px 5px #e91e63; 
+            opacity: 0;
+            animation: textFall 8s linear infinite; 
+        }
+
+        @keyframes textFall {
+            0% { transform: translateY(-50px); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(calc(100% + 50px)); opacity: 0; }
+        }
+
+
+        /* --- ESTILOS DE LA PÁGINA (LIBRO) --- */
+        .page {
+            /* Uso de min-height para asegurar el scroll entre secciones */
+            display: block; 
+            min-height: 100vh;
+            display: flex; /* Mantiene el contenido centrado */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            position: relative; 
+        }
+        
+        /* --- ESTILOS DE PORTADA --- */
+        #page0 {
+            background-color: #ffcdd2; 
+            text-align: center;
+        }
+        .cover-title {
+            font-size: 2.5rem;
+            color: #d81b60; 
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .cover-subtitle {
+            font-size: 1.2rem;
+            color: #880e4f;
+            margin-bottom: 40px;
+        }
+        .collage {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+        .collage img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        /* --- ESTILOS DE CONTENIDO DE PÁGINA --- */
+        .page-content {
+            background: rgba(255, 255, 255, 0.7); 
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 400px; 
+            width: 90%;
+            box-shadow: 0 8px 20px rgba(236, 64, 122, 0.3); 
+            text-align: center;
+            position: relative; 
+        }
+
+        .photo {
+            width: 100%;
+            height: 250px;
+            object-fit: cover; 
+            object-position: center; 
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            border: 4px solid #f8bbd0; 
+        }
+
+        .phrase {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #311b92; 
+            margin: 15px 0;
+        }
+        
+        .song-info {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .song-title {
+            font-weight: bold;
+            color: #d81b60;
+            margin-top: 10px;
+        }
+        .artist-name {
+            font-size: 0.9em;
+            color: #7e57c2;
+            margin-bottom: 10px;
+        }
+
+        .music {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 350px; 
+        }
+        
+        iframe {
+            border-radius: 10px;
+            width: 100%;
+            height: 180px; 
+            border: none; 
+        }
+        
+        /* NUEVO BOTÓN PARA DESBLOQUEAR AUDIO */
+        #btn-audio-permission {
+            background-color: #e91e63;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #btn-audio-permission:hover {
+            background-color: #c2185b;
+            transform: scale(1.05);
+        }
+
+        /* --- BOTÓN/ENLACE DE CORAZÓN PARA PASAR PÁGINA (SOLO HTML) --- */
+        .btn-next {
+            margin-top: 30px;
+            font-size: 3rem;
+            color: #e91e63; 
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: none; /* Quitar el subrayado del enlace */
+            display: inline-block; /* Permitir animación */
+            text-shadow: 0 0 10px rgba(236, 64, 122, 0.7);
+            animation: bounce 1.5s infinite;
+            padding: 10px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* --- ESTILOS DE LA PÁGINA FINAL (SORPRESA) --- */
+        #page9 .page-content {
+             background: linear-gradient(145deg, #ff8a80, #ffcdd2); 
+             border: 5px solid #d81b60;
+             padding: 30px;
+             position: relative; 
+             overflow: hidden; 
+        }
+        .final-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #880e4f;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+            position: relative; 
+            z-index: 2;
+        }
+        .final-message strong {
+            display: block;
+            font-size: 2rem;
+            margin-top: 10px;
+            color: #e91e63;
+        }
+    </style>
+</head>
+<body>
+    <div class="star-background"></div>
+    <div class="heart-effect-container" id="heart-container"></div>
+
+    <div class="page" id="page0">
+        <div class="cover-title" style="animation: fadeInDown 1s;">✨ ¡Feliz 1er Mes de Aniversario! ✨</div>
+        <div class="cover-subtitle" style="animation: fadeIn 2s;">Este libro es solo para ti, mi Jhonatan 💖</div>
+        
+        <button id="btn-audio-permission" onclick="startAudioPermission();">
+            ▶️ Activar Música (Clic Aquí)
+        </button>
+
+        <div class="collage" style="animation: zoomIn 1.5s;">
+            <img class="cover-img" src="https://i.pinimg.com/736x/bb/78/19/bb7819fe4873afd3a6d417f5ebea0493.jpg" alt="Cover Image 1">
+            <img class="cover-img" src="https://i.pinimg.com/736x/40/2b/7e/402b7e1392dcdda5a50247334ce8ecde.jpg" alt="Cover Image 2">
+            <img class="cover-img" src="https://i.pinimg.com/736x/f4/f7/4f/f4f74f57c94cfc3f92d2f515dcf5cd9c.jpg" alt="Cover Image 3">
+            <img class="cover-img" src="https://i.pinimg.com/736x/6f/c4/50/6fc450d77a50aa9b8ed9d3fd3bd73826.jpg" alt="Cover Image 4">
+            <img class="cover-img" src="https://i.pinimg.com/1200x/55/69/ff/5569ffe6120c71439bda8dd3c2286a02.jpg" alt="Cover Image 5">
+            <img class="cover-img" src="https://i.pinimg.com/736x/46/43/30/4643304673929a9bfdc0c0578ab997c8.jpg" alt="Cover Image 6">
+        </div>
+        
+        <a class="btn-next" href="#page1" onclick="playNextVideo(document.getElementById('page1'));">¡Comenzar! ❤️</a>
+    </div>
+
+    <div class="page" id="page1">
+        <div class="page-content">
+            <img class="photo" src="https://i.pinimg.com/736x/95/21/05/952105abe4cce2d26eb21520d6132ea0.jpg" alt="Taekook Foto 1">
+            <div class="phrase">"Dejaré mi corazón contigo, y confío en que el universo siempre me traerá de vuelta a ti."</div>
+            <div class="song-info">
+                <p class="song-title">🎶 Blue</p>
+                <p class="artist-name">Yung Kai</p>
+            </div>
+            <div class="music">
+                <iframe id="video1" src="https://www.youtube.com/embed/4adZ7AguVcw?autoplay=0&loop=1&playlist=4adZ7AguVcw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        <a class="btn-next" href="#page2" onclick="stopCurrentVideo(document.getElementById('page1')); playNextVideo(document.getElementById('page2'));">❤️</a>
+    </div>
+
+    <div class="page" id="page2">
+        <div class="page-content">
+            <img class="photo" src="https://i.pinimg.com/1200x/3a/9c/da/3a9cdae8502ba4c50811f66cf5551177.jpg" alt="Taekook Foto 2">
+            <div class="phrase">"No fue coincidencia, fue un presentimiento. Mi alma siempre supo que te encontraría."</div>
+            <div class="song-info">
+                <p class="song-title">🎶 Sexto Sentido</p>
+                <p class="artist-name">008RACCA</p>
+            </div>
+            <div class="music">
+                <iframe id="video2" src="https://www.youtube.com/embed/tJA_mxEIJ2E?autoplay=0&loop=1&playlist=tJA_mxEIJ2E" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        <a class="btn-next" href="#page3" onclick="stopCurrentVideo(document.getElementById('page2')); playNextVideo(document.getElementById('page3'));">❤️</a>
+    </div>
+
+    <div class="page" id="page3">
+        <div class="page-content">
+            <img class="photo" src="https://i.pinimg.com/1200x/d7/6f/54/d76f54094a5a8db58d5f1b121e28c67a.jpg" alt="Taekook Foto 3">
+            <div class="phrase">"Un simple beso puede cambiarlo todo. Me acerqué a ti y supe que aquí quería quedarme."</div>
+            <div class="song-info">
+                <p class="song-title">🎶 Beso</p>
+                <p class="artist-name">Josean Log</p>
+            </div>
+            <div class="music">
+                <iframe id="video3" src="https://www.youtube.com/embed/QESagb08FYs?autoplay=0&loop=1&playlist=QESagb08FYs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        <a class="btn-next" href="#page4" onclick="stopCurrentVideo(document.getElementById('page3')); playNextVideo(document.getElementById('page4'));">❤️</a>
+    </div>
+
+    <div class="page" id="page4">
+        <div class="page-content">
+            <img class="photo" src="https://i.pinimg.com/736x/18/c7/2c/18c72ce6e10e3efec115a0a6c4703490.jpg" alt="Taekook Foto 4">
+            <div class="phrase">"Eres mi refugio. Contigo, el tiempo se detiene y solo existe la paz de tu presencia."</div>
+            <div class="song-info">
+                <p class="song-title">🎶 Música Chill</p>
+                <p class="artist-name">Tu Elección</p>
+            </div>
+            <div class="music">
+                <iframe id="video4" src="https://www.youtube.com/embed/-7a49quIQQc?autoplay=0&loop=1&playlist=-7a49quIQQc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        <a class="btn-next" href="#page5" onclick="stopCurrentVideo(document.getElementById('page4')); playNextVideo(document.getElementById('page5'));">❤️</a>
+    </div>
+
+    <div class="page" id="page5">
+        <div class="page-content">
+            <img class="photo" src="https://i.pinimg.com/736x/73/53/8f/73538f52b709fff7d026565a32e42dd2.jpg" alt="Taekook Foto 5">
+            <div class="phrase">"No planeé quererte así, pero cada día me gustas más. Odio no tenerte cerca siempre."</div>
+            <div class="song-info">
+                <p class="song-title">🎶 Gustarme Tanto</p>
+                <p class="artist-name">Zcar JPG</p>
+            </div>
+            <div class="music">
+                <iframe id="video5" src="https://www.youtube.com/embed/beO-ld28SHU?autoplay=0&loop=1&playlist=beO-ld28SHU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        <a class="btn-next" href="#page6" onclick="stopCurrentVideo(document.getElementById('page5')); playNextVideo(document.getElementById('page6'));">❤️</a>
+    </div>
+
+    <div class="page" id="page6">
+        <div class="page-content">
+            <img class="photo" src="https://i.pinimg.com/1200x/7f/f0/c7/7ff0c7abd557ebbd35bdeea2bfb44dda.jpg" alt="Taekook Foto 6">
+            <div class="phrase">"Somos los imprudentes, somos la juventud salvaje, persiguiendo visiones de nuestro futuro. En la intensidad de nuestro amor, sé que estoy justo donde debo estar."</div>
+            <div class="song-info">
+                <p class="song-title">🎶 Mai (Clip officiel)</p>
+                <p class="artist-name">VIDEOCLUB</p>
+            </div>
+            <div class="music">
+                <iframe id="video6" src="https://www.youtube.com/embed/cT5GghQwhFw?autoplay=0&loop=1&playlist=cT5GghQwhFw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        <a class="btn-next" href="#page7" onclick="stopCurrentVideo(document.getElementById('page6')); playNextVideo(document.getElementById('page7'));">❤️</a>
+    </div>
+
+    <div class="page" id="page7">
+        <div class="page-content">
+            <img class="photo" src="https://i.pinimg.com/1200x/54/e2/32/54e2322927c21d768b80213e265acc98.jpg" alt="Taekook Foto 7">
+            <div class="phrase">"No importa la hora, no importa la distancia. Quédate conmigo, porque nuestro amor tiene el ritmo y la nostalgia perfecta."</div> 
+            <div class="song-info">
+                <p class="song-title">🎶 Amor de Siempre</p>
+                <p class="artist-name">CUCO</p>
+            </div>
+            <div class="music">
+                <iframe id="video7" src="https://www.youtube.com/embed/ZyowJ5GB2Dk?autoplay=0&loop=1&playlist=ZyowJ5GB2Dk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        <a class="btn-next" href="#page8" onclick="stopCurrentVideo(document.getElementById('page7')); playNextVideo(document.getElementById('page8'));">❤️</a>
+    </div>
+
+    <div class="page" id="page8">
+        <div class="page-content">
+            <img class="photo" src="https://i.pinimg.com/736x/22/1d/ba/221dba7305c682887bb92d1101345238.jpg" alt="Taekook Foto 8">
+            <div class="phrase">"Eres demasiado bueno para ser verdad. No puedo quitar mis ojos de ti. Al fin el amor ha llegado y agradezco a Dios estar vivo."</div>
+            <div class="song-info">
+                <p class="song-title">🎶 "amor, amor, amor, amor"</p>
+                <p class="artist-name">r o x u b s</p>
+            </div>
+            <div class="music">
+                <iframe id="video8" src="https://www.youtube.com/embed/0Mw_Vqsdo5g?autoplay=0&loop=1&playlist=0Mw_Vqsdo5g" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        <a class="btn-next" href="#page9" onclick="stopCurrentVideo(document.getElementById('page8'));">❤️</a>
+    </div>
+
+    <div class="page" id="page9">
+        <div class="page-content">
+            <div class="rain-effect-container" id="rain-container"></div>
+            <img class="photo" src="https://i.pinimg.com/1200x/18/1f/37/181f37a7f512d7af69c9fc99b2299f77.jpg" alt="Taekook Final">
+            <div class="final-message" style="animation: fadeInUp 1s;">
+                "Gracias por este mes tan especial,
+                nuestro amor apenas empieza y ya es lo más bonito que tengo.
+                <strong>¡Te amo con todo mi corazón ❤️!</strong>"
+            </div>
+        </div>
+        <a class="btn-next" href="#page0" onclick="stopCurrentVideo(document.getElementById('page9'));">↩️ Volver a Empezar</a>
+    </div>
+
+    <script>
+        let audioPermissionGranted = false;
+
+        // --- FUNCIONES DE EFECTOS (CORAZONES Y LLUVIA) ---
+        const heartContainer = document.getElementById('heart-container');
+        const rainContainer = document.getElementById('rain-container');
+        const rainTexts = ["Te Amo", "Mi Amor", "Siempre Juntos", "Mi Vida", "Contigo", "Forever"];
+        let heartInterval;
+        let rainInterval;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 4 + 4 + 's'; 
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heartContainer.appendChild(heart);
+            heart.addEventListener('animationend', () => { heart.remove(); });
+        }
+
+        function createRainText() {
+            const text = document.createElement('div');
+            text.classList.add('rain-text');
+            text.textContent = rainTexts[Math.floor(Math.random() * rainTexts.length)];
+            text.style.left = Math.random() * 100 + 'vw';
+            text.style.fontSize = Math.random() * 1 + 1 + 'rem'; 
+            text.style.animationDuration = Math.random() * 3 + 5 + 's'; 
+            text.style.animationDelay = Math.random() * 1 + 's'; 
+            rainContainer.appendChild(text);
+            text.addEventListener('animationend', () => { text.remove(); });
+        }
+
+        function startEffects() {
+            stopEffects(); 
+            heartInterval = setInterval(createHeart, 300); 
+
+            // Activa la lluvia de texto solo si estamos en la página final
+            if (window.location.hash === '#page9') {
+                rainInterval = setInterval(createRainText, 250); 
+            }
+        }
+
+        function stopEffects() {
+            clearInterval(heartInterval);
+            clearInterval(rainInterval);
+            heartContainer.innerHTML = ''; 
+            rainContainer.innerHTML = '';
+        }
+        
+        // --- LÓGICA DE AUDIO (CLAVE PARA DESBLOQUEAR EL SONIDO) ---
+        function startAudioPermission() {
+            audioPermissionGranted = true;
+            document.getElementById('btn-audio-permission').style.display = 'none';
+        }
+
+        // Detiene el video anterior
+        function stopCurrentVideo(pageElement) {
+            if (pageElement) {
+                const iframe = pageElement.querySelector('iframe');
+                if (iframe) {
+                    // Recargar la fuente del iframe con autoplay=0 para forzar la pausa
+                    const src = iframe.getAttribute('src');
+                    if (src && src.includes('youtube.com/embed/')) {
+                         // Extraer el ID de video para reconstruir la URL
+                         const videoId = src.split('?')[0].split('/').pop();
+                         iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=0&loop=1&playlist=${videoId}`);
+                    }
+                }
+            }
+        }
+
+        // Intenta reproducir el siguiente video si el permiso de audio fue concedido
+        function playNextVideo(pageElement) {
+            // Detenemos primero todos los videos por si acaso
+            document.querySelectorAll('.page').forEach(p => stopCurrentVideo(p));
+            
+            if (audioPermissionGranted && pageElement && pageElement.id !== 'page0') {
+                const iframe = pageElement.querySelector('iframe');
+                if (iframe) {
+                    const src = iframe.getAttribute('src');
+                    if (src && src.includes('youtube.com/embed/')) {
+                        const videoId = src.split('?')[0].split('/').pop();
+                        // Recarga con autoplay=1 para que inicie
+                        iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}`);
+                    }
+                }
+            }
+            startEffects(); // Reinicia efectos y la lluvia si es la página 9
+        }
+
+        // --- Lógica de Inicialización ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Aseguramos que los efectos inicien al cargar la página
+            startEffects(); 
+            
+            // Listener para cuando la URL cambia (al hacer clic en los enlaces #pageX)
+            window.addEventListener('hashchange', () => {
+                 // Aseguramos que los videos paren y empiecen correctamente en cada cambio de hash
+                 const targetPageId = window.location.hash.substring(1); // Obtiene 'page1', 'page2', etc.
+                 const targetPageElement = document.getElementById(targetPageId);
+                 
+                 // Simula la lógica de pasar de página
+                 if (targetPageElement) {
+                     playNextVideo(targetPageElement);
+                 } else if (targetPageId === 'page0' || !targetPageId) {
+                     // Si volvemos a la portada, paramos todo y reiniciamos efectos
+                     stopEffects();
+                     document.querySelectorAll('.page').forEach(p => stopCurrentVideo(p));
+                     startEffects();
+                 }
+            });
+            
+            // Llamamos a playNextVideo en el elemento actual al cargar, por si se carga directamente una página con hash
+            const initialPage = document.getElementById(window.location.hash.substring(1) || 'page0');
+            playNextVideo(initialPage);
+        });
+    </script>
+</body>
+</html>
